@@ -1,0 +1,10 @@
+Given a directory program will iterate through all files and replace their file name.
+
+
+Usage:
+
+
+
+
+./Batch Find Replace.py             Test program and see filenames to be updated
+./Batch Find Replace.py -w          Write out and replace filenames
