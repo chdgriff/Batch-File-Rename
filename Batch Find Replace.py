@@ -6,23 +6,24 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "E:\\Anime\\Tokyo Ghoul\\Season 3"
+DIRECTORY       = "E:\\Anime\\Tokyo Ghoul\\"            # '\' must be escaped
 FIND            = "S02"
-#
-#
 REPLACE         = "S03"
-#
 
+
+# number of files to be renamed
 NUM_START       = 1
 NUM_END         = 0          # inclusive
-#65
-DEBUG           = True          # Change default behavior
-SEASONS         = False
-SEASON_START    = 1
-SEASON_END       = 18              # Not inclusive
 
-def batchFileFindandReplace(s=""):
-    fileDir = DIRECTORY + s
+DEBUG           = True          # Default behavior requiring "-w" flag to write filenames
+
+# If recuring through numbered directories e.g. folder1, folder2, folder3
+NUM_DIR         = False
+NUM_START       = 1
+NUM_END         = 18              # Inclusive
+
+def batchFileFindandReplace(n=""):
+    fileDir = DIRECTORY + n
     filesRenamed = 0
 
     if not os.path.isdir(fileDir):
@@ -36,11 +37,11 @@ def batchFileFindandReplace(s=""):
             break
         foundIndex = fileName.find(FIND)
         if foundIndex == -1:                 # If not found
-            continue;
+            continue
 
-        nextChar = foundIndex + len(FIND)# Finds the next character after FIND
-        #REPLACE = "One Piece S"+s+"E"
-        if nextChar >= len(fileName):   # If found at the end of the name
+        nextChar = foundIndex + len(FIND)# Finds the next character after text
+ 
+        if nextChar >= len(fileName):   # If text found at the end of the filename
             newName = fileName[:foundIndex] + REPLACE
         else:
             newName = fileName[:foundIndex] + REPLACE + fileName[nextChar:]
@@ -52,7 +53,7 @@ def batchFileFindandReplace(s=""):
         index += 1
     return filesRenamed
 
-def introMessage(s=""):
+def introMessage():
     print("\n================================================================================")
     print("             Starting Batch File Name Find and Replace")
     print("================================================================================")
@@ -73,14 +74,14 @@ def default():
     endingMessage(filesRenamed)
     print("================================================================================\n")
 
-def seasons():
+def numberedDirectory():
     totalFilesRenamed = 0
-    for num in range(SEASON_START, SEASON_END):
-        if SEASON_END-1 > 9:
-            season = str(num).zfill(2)
+    for num in range(NUM_START, NUM_END+1):
+        if NUM_END > 9:
+            number = str(num).zfill(2)
         else:
-            season = str(num)
-        filesRenamed = batchFileFindandReplace(season)
+            number = str(num)
+        filesRenamed = batchFileFindandReplace(number)
         endingMessage(filesRenamed)
         print("\n")
         totalFilesRenamed += filesRenamed
@@ -97,8 +98,8 @@ def main():
     if not DEBUG:
         print("Confirm Rename")
         input()
-    if SEASONS:
-        seasons()
+    if NUM_DIR:
+        numberedDirectory()
     else:
         default()
 
