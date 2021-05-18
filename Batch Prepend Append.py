@@ -6,21 +6,23 @@ import sys, getopt
 # given directory.
 
 DIRECTORY       = "D:\\TV Shows\\One Piece"
-TEXT                = ""
-NUM                 = True        # enumerate
+
+TEXT                = ""          # text to be added (not enumerated)
+NUM                 = True        # enumerate text added
+PREPEND_OR_APPEND   = 'P'               # [A, P] Defaults to Prepend
+
+# Text around number to be added
 NUM_L               = "One Piece S21E"          # text {number}
 NUM_R               = ""                           # {number} text
-DIGITS              = 3
-PREPEND_OR_APPEND   = 'P'               # [A, P] Defaults to Prepend
-NUM_START           = 53
-NUM_END             = 107                 # inclusive
 
-DEBUG               = True
 
-SEASONS             = False
-SEASON_START        = 1
-SEASON_END           = 18              # Not inclusive
+DIGITS              = 3                 # Number of digits for the number to add e.g. 001 vs 1
 
+# Number of files to be renamed
+NUM_START           = 1
+NUM_END             = 0                 # inclusive (0 means for all files)
+
+DEBUG               = True              # change default behavior from requiring '-w' to write filenames
 
 def batchPrependAppend(s=""):
     fileDir = DIRECTORY + s
@@ -35,7 +37,6 @@ def batchPrependAppend(s=""):
 
         if NUM:
             textToAdd = NUM_L+str(index).zfill(DIGITS)+NUM_R
-            #print(textToAdd)
         else:
             textToAdd = TEXT
 
@@ -72,21 +73,6 @@ def default():
     endingMessage(filesRenamed)
     print("=====================================================================\n")
 
-def seasons():
-    totalFilesRenamed = 0
-    for num in range(SEASON_START, SEASON_END):
-        if SEASON_END-1 > 9:
-            season = str(num).zfill(2)
-        else:
-            season = str(num)
-        introMessage(season)
-        filesRenamed = batchPrependAppend(season)
-        endingMessage(filesRenamed)
-        print("\n")
-        totalFilesRenamed += filesRenamed
-    print(str(totalFilesRenamed)+" files renamed in total")
-    print("=====================================================================\n")
-
 def main():
     opts, args = getopt.getopt(sys.argv[1:], "wt")
     for opt, arg in opts:
@@ -94,10 +80,7 @@ def main():
             global DEBUG
             DEBUG = False
     introMessage()
-    if SEASONS:
-        seasons()
-    else:
-        default()
+    default()
 
 
 if __name__ == "__main__":
