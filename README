@@ -1,10 +1,13 @@
-Given a directory program will iterate through all files and replace their file name.
+Use the following programs to rename files in a given directory
 
 
-Usage:
-
-
-
+Find and Replace Text:
 
 ./Batch Find Replace.py             Test program and see filenames to be updated
 ./Batch Find Replace.py -w          Write out and replace filenames
+
+Append or Prepend to each filename:
+./Batch Prepend Append.py -w
+
+Adjust numbers within given text for each file:
+./Adjust File Numbers.py -w
