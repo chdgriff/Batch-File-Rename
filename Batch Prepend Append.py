@@ -5,14 +5,14 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "D:\\TV Shows\\One Piece"
+DIRECTORY       = "F:\Shows\Atlanta S02" 
 
-TEXT                = ""          # text to be added (not enumerated)
-NUM                 = True        # enumerate text added
-PREPEND_OR_APPEND   = 'P'               # [A, P] Defaults to Prepend
+TEXT                = " (2018) [1080p]"          # text to be added (not enumerated)
+NUM                 = False        # enumerate text added
+PREPEND_OR_APPEND   = 'A'               # [A, P] Defaults to Prepend
 
 # Text around number to be added
-NUM_L               = "One Piece S21E"          # text {number}
+NUM_L               = ""          # text {number}
 NUM_R               = ""                           # {number} text
 
 
@@ -23,6 +23,15 @@ NUM_START           = 1
 NUM_END             = 0                 # inclusive (0 means for all files)
 
 DEBUG               = True              # change default behavior from requiring '-w' to write filenames
+
+def fixPath(path):
+  newPath = ''
+  for c in path:
+    if c == '\\':
+      newPath += '\\\\'
+    else:
+      newPath += c
+  return newPath
 
 def batchPrependAppend(s=""):
     fileDir = DIRECTORY + s
@@ -74,6 +83,9 @@ def default():
     print("=====================================================================\n")
 
 def main():
+    global DIRECTORY
+    DIRECTORY = fixPath(DIRECTORY)
+
     opts, args = getopt.getopt(sys.argv[1:], "wt")
     for opt, arg in opts:
         if opt == '-w':

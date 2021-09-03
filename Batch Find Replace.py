@@ -6,10 +6,9 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "E:\\Anime\\Tokyo Ghoul\\"            # '\' must be escaped
-FIND            = "S02"
-REPLACE         = "S03"
-
+DIRECTORY       = "E:\TV Shows\Warrior\Season 1"   
+FIND            = "[Judas] Highschool of the Dead - "
+REPLACE         = "Highschool of the Dead S01E"
 
 # number of files to be renamed
 NUM_START       = 1
@@ -21,6 +20,15 @@ DEBUG           = True          # Default behavior requiring "-w" flag to write 
 NUM_DIR         = False
 NUM_START       = 1
 NUM_END         = 18              # Inclusive
+
+def fixPath(path):
+  newPath = ''
+  for c in path:
+    if c == '\\':
+      newPath += '\\\\'
+    else:
+      newPath += c
+  return newPath
 
 def batchFileFindandReplace(n=""):
     fileDir = DIRECTORY + n
