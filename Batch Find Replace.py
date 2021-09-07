@@ -6,9 +6,9 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "E:\Downloads\Its.Always.Sunny.In.Philadelphia.S13.1080p.AMZN.WEBRip.DDP5.1.x264-NTb[rartv]"   
-FIND            = "[Judas] Highschool of the Dead - "
-REPLACE         = "Highschool of the Dead S01E"
+DIRECTORY       = "E:\Downloads\What.If.2021.S01E04.1080p.DSNP.WEBRip.DDP5.1.Atmos.x264-FLUX[rartv]"   
+FIND            = ".1080p.web.h264-ggwp"
+REPLACE         = " (2021) [1080p]"
 REMOVE_PERIODS  = True
 
 # number of files to be renamed
@@ -36,6 +36,17 @@ def checkDirectory(path):
     print("ERROR: \""+path+"\" cannot be found")
     exit()
   return True
+
+def getArgs():
+  try:
+    opts, args = getopt.getopt(sys.argv[1:], "wt")
+  except getopt.GetoptError as err:
+    print("ERROR: " + str(err.args[0])+'\n\n')
+    exit()
+  for opt, arg in opts:
+    if opt == '-w':
+      global DEBUG
+      DEBUG = False
 
 def batchFileFindandReplace(n=""):
   fileDir = DIRECTORY + n
@@ -119,12 +130,10 @@ def removePeriods():
 
 
 def main():
-  opts, args = getopt.getopt(sys.argv[1:], "wt")
-  for opt, arg in opts:
-    if opt == '-w':
-      global DEBUG
-      DEBUG = False
+  getArgs()
   introMessage()
+  global DIRECTORY
+  #DIRECTORY = fixPath(DIRECTORY)
   if not DEBUG:
     print("Confirm Rename")
     input()
