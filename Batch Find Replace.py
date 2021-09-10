@@ -6,9 +6,9 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "E:\Downloads\What.If.2021.S01E04.1080p.DSNP.WEBRip.DDP5.1.Atmos.x264-FLUX[rartv]"   
-FIND            = ".1080p.web.h264-ggwp"
-REPLACE         = " (2021) [1080p]"
+DIRECTORY       = "D:\Downloads\\New folder"
+FIND            = "One Punch Man S0"
+REPLACE         = "One-Punch Man S0"
 REMOVE_PERIODS  = True
 
 # number of files to be renamed
@@ -49,6 +49,7 @@ def getArgs():
       DEBUG = False
 
 def batchFileFindandReplace(n=""):
+  introMessage()
   fileDir = DIRECTORY + n
   filesRenamed = 0
   checkDirectory(fileDir)
@@ -77,10 +78,15 @@ def batchFileFindandReplace(n=""):
     index += 1
   return filesRenamed
 
-def introMessage():
+def introMessage(opt="default"):
   print("\n================================================================================")
-  print("             Starting Batch File Name Find and Replace")
+  
+  if opt == "period":
+    print("             Starting Batch Period Remover")
+  elif opt == "default":
+    print("             Starting Batch File Name Find and Replace")
   print("================================================================================")
+  
 
 
 def endingMessage(filesRenamed=0):
@@ -114,6 +120,7 @@ def numberedDirectory():
   print("================================================================================\n")
 
 def removePeriods():
+  introMessage("period")
   filesRenamed = 0
   fileDir = DIRECTORY
   checkDirectory(fileDir)
@@ -131,7 +138,6 @@ def removePeriods():
 
 def main():
   getArgs()
-  introMessage()
   global DIRECTORY
   #DIRECTORY = fixPath(DIRECTORY)
   if not DEBUG:
