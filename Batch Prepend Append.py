@@ -6,18 +6,18 @@ import getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY = "D:\Media\Anime\One Punch Man\Season 02"
+DIRECTORY = "D:\Downloads\Grappler Baki\Season 2"
 
 TEXT = " (2019) [1080p]"          # text to be added (not enumerated)
-NUM = False        # enumerate text added
-PREPEND_OR_APPEND = 'A'               # [A, P] Defaults to Prepend
+NUM = True        # enumerate text added
+PREPEND_OR_APPEND = 'P'               # [A, P] Defaults to Prepend
 
 # Text around number to be added
-NUM_L = ""          # text {number}
+NUM_L = "Baki The Grappler S02E"          # text {number}
 NUM_R = ""                           # {number} text
 
 
-DIGITS = 3                 # Number of digits for the number to add e.g. 001 vs 1
+DIGITS = 2                 # Number of digits for the number to add e.g. 001 vs 1
 
 # Number of files to be renamed
 NUM_START = 1
@@ -46,6 +46,7 @@ def batchPrependAppend(s=""):
   filesRenamed = 0
   if DEBUG:
     print("--------------------------------DEBUG--------------------------------")
+  checkDirectory(fileDir)
   print("\nDirectory: \""+fileDir+"\"\n")
   index = NUM_START
   for fileName in os.listdir(fileDir):
@@ -92,13 +93,15 @@ def default():
 
 def main():
   global DIRECTORY
-  # DIRECTORY = fixPath(DIRECTORY)
+  #DIRECTORY = fixPath(DIRECTORY)
 
   opts, args = getopt.getopt(sys.argv[1:], "wt")
   for opt, arg in opts:
     if opt == '-w':
       global DEBUG
       DEBUG = False
+      print("Confirm Rename")
+      input()
   introMessage()
   default()
 
