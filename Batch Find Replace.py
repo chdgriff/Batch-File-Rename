@@ -6,10 +6,13 @@ import sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
-DIRECTORY       = "D:\Downloads\\New folder"
-FIND            = "One Punch Man S0"
-REPLACE         = "One-Punch Man S0"
-REMOVE_PERIODS  = True
+DIRECTORY       = "D:\Anime\Baki The Grappler\Season 01"
+FIND            = "Baki The Grappler "
+REPLACE         = "Baki the Grappler "
+REMOVE_TOKENS   = False
+TOKEN           = '_'
+
+OFFSET          = 0          # Additonal characters to replace
 
 # number of files to be renamed
 NUM_START       = 1
@@ -19,8 +22,6 @@ DEBUG           = True          # Default behavior requiring "-w" flag to write 
 
 # If recuring through numbered directories e.g. folder1, folder2, folder3
 NUM_DIR         = False
-NUM_START       = 1
-NUM_END         = 18              # Inclusive
 
 def fixPath(path):
   newPath = ''
@@ -64,7 +65,7 @@ def batchFileFindandReplace(n=""):
     if foundIndex == -1:                 # If not found
       continue
 
-    nextChar = foundIndex + len(FIND)# Finds the next character after text
+    nextChar = foundIndex + len(FIND) + OFFSET # Finds the next character after text
  
     if nextChar >= len(fileName):   # If text found at the end of the filename
       newName = fileName[:foundIndex] + REPLACE
@@ -78,11 +79,41 @@ def batchFileFindandReplace(n=""):
     index += 1
   return filesRenamed
 
+def baki(n=""):
+  fileDir = DIRECTORY + n
+  filesRenamed = 0
+  checkDirectory(fileDir)
+  print("\nDirectory: \""+fileDir+"\"\n")
+
+  index = NUM_START
+  for fileName in os.listdir(fileDir):
+    if NUM_END and index > NUM_END:
+      break
+    foundIndex = fileName.find(FIND)
+    if foundIndex == -1:                 # If not found
+      continue
+    nextChar = foundIndex + len(FIND) + 10
+    if nextChar >= len(fileName):   # If text found at the end of the filename
+      newName = fileName[:foundIndex] + REPLACE
+    else:
+      newName = fileName[:foundIndex] + REPLACE + fileName[nextChar:]
+
+    if not DEBUG:
+      os.rename(fileDir+"/"+fileName, fileDir+"/"+newName)
+    print(fileName + " --> " + newName)
+    filesRenamed += 1
+    index += 1
+  return filesRenamed
+
+
+
+  
+
 def introMessage(opt="default"):
   print("\n================================================================================")
   
-  if opt == "period":
-    print("             Starting Batch Period Remover")
+  if opt == "token":
+    print("             Starting Batch Token Remover")
   elif opt == "default":
     print("             Starting Batch File Name Find and Replace")
   print("================================================================================")
@@ -119,15 +150,18 @@ def numberedDirectory():
   print(str(totalFilesRenamed)+" files renamed in total")
   print("================================================================================\n")
 
-def removePeriods():
-  introMessage("period")
+def removeToken(token = '.'):
+  introMessage("token")
   filesRenamed = 0
   fileDir = DIRECTORY
   checkDirectory(fileDir)
 
   for fileName in os.listdir(fileDir):
-    temp = fileName.split('.')
-    newName = ' '.join(temp[:-1]) + '.' + temp[-1]
+    temp = fileName.split(token)
+    if token == '.':
+      newName = ' '.join(temp[:-1]) + '.' + temp[-1]
+    else:
+      newName = ' '.join(temp)
 	
     if not DEBUG:
       os.rename(fileDir+"/"+fileName, fileDir+"/"+newName)
@@ -145,8 +179,8 @@ def main():
     input()
   if NUM_DIR:
     numberedDirectory()
-  elif REMOVE_PERIODS:
-    removePeriods()
+  elif REMOVE_TOKENS:
+    removeToken(TOKEN)
   else:
     default()
 
