@@ -1,30 +1,34 @@
-import os
-import string
-import sys
-import getopt
+import os, string, sys, getopt
 
-# This is a python script to find and replace file names in a
+# This is a python script to prepend or append text and numbers to files in a
 # given directory.
+
+# To use input your specific values in the macros below.
+#
 
 DIRECTORY = "D:\Downloads\Grappler Baki\Season 2"
 
-TEXT = " (2019) [1080p]"          # text to be added (not enumerated)
-NUM = True        # enumerate text added
-PREPEND_OR_APPEND = 'P'               # [A, P] Defaults to Prepend
+PREPEND_OR_APPEND = 'P'                   # [A, P] Defaults to Prepend
+TEXT = " (2019) [1080p]"                  # text to be added (ignored if enumerating)
 
-# Text around number to be added
-NUM_L = "Baki The Grappler S02E"          # text {number}
-NUM_R = ""                           # {number} text
-
-
-DIGITS = 2                 # Number of digits for the number to add e.g. 001 vs 1
+# If you want to enumerate the text to be added
+NUM = True           
+NUM_L = "Baki The Grappler S02E"          # text{number}
+NUM_R = ""                                # {number}text
+DIGITS = 2                                # Number of digits for the number to add e.g. 001 vs 1
 
 # Number of files to be renamed
+FILE_COUNT = 0              # inclusive (default 0 means all files found)
 NUM_START = 1
 NUM_END = 0                 # inclusive (0 means for all files)
 
 DEBUG = True              # change default behavior from requiring '-w' to write filenames
 
+def checkDirectory(path):
+  if not os.path.isdir(path):
+    print("ERROR: \""+path+"\" cannot be found")
+    exit()
+  return True
 
 def fixPath(path):
   newPath = ''
@@ -34,12 +38,6 @@ def fixPath(path):
     else:
       newPath += c
   return newPath
-
-def checkDirectory(path):
-  if not os.path.isdir(path):
-    print("ERROR: \""+path+"\" cannot be found")
-    exit()
-  return True
 
 def batchPrependAppend(s=""):
   fileDir = DIRECTORY + s
