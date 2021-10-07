@@ -1,20 +1,19 @@
-import os
-from os import path
-import string
-import sys, getopt
+import os, string, sys, getopt
 
 # This is a python script find and adjust numbers found 
 # for filenames in a given directory.
 
-DIRECTORY       = "E:\Anime\One Piece\Season 16"       # \n or \t must be properly escapped with \\
-FIND            = "One Piece S16E##"                   # Input piece of text to find with '##' for the placeholder of the numbers to replace.
-														#
+DIRECTORY       = "E:\Anime\One Piece\Season 16"      # \n or \t must be properly escapped with '\\'
 
-ADJUST          = 578                                       # number to adjust the numbers by, can be negative
+# Input piece of text to find with '##' for the placeholder of the numbers to replace.
+# '##' must be at the end of the text to locate
+FIND            = "One Piece S16E##"                  
+
+
+ADJUST          = 578                                 # number to adjust the numbers by, can be negative
 
 # Number of files to renamed
-FILE_COUNT = 0         # inclusive (0 means all files in given directory)
-
+FILE_COUNT = 0         																# inclusive (0 means all files in given directory)
 
 DEBUG           = True          # Change default behavior
 
