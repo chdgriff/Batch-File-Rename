@@ -11,16 +11,14 @@ OFFSET          = 0                         # Additonal characters to find and r
 REPLACE         = "Baki the Grappler "
 
 # In case where file name is divided by tokens i.e a.file.name.pdf or a_file_name.pdf
-REMOVE_TOKENS   = False
+REMOVE_TOKENS   = False                   # Changing to true only removes tokens not find and replace.
 TOKEN           = '_'
-
-
 
 # number of files to be renamed
 NUM_START       = 1
 NUM_END         = 0          # inclusive, default is 0 for all files found
 
-DEBUG           = True          # Default behavior requiring "-w" flag to write filenames
+DEBUG           = True          # Default behavior requires "-w" flag to write filenames. Change to false to always write file names
 
 # If recuring through numbered directories e.g. folder1, folder2, folder3
 NUM_DIR         = False
