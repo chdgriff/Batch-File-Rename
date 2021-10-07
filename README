@@ -1,6 +1,8 @@
 Use the following programs to rename files in a given directory
 
 
+Open the file and specify the text and directory via the macros and the run the files as listed below.
+
 Find and Replace Text:
 
 ./Batch Find Replace.py             Test program and see filenames to be updated
