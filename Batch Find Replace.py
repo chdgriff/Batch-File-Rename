@@ -27,14 +27,6 @@ NUM_SIZE        = 2             # Change digit count for numbers i.e. 01 vs 001 
 NUM_START       = 1             
 NUM_END         = 0             # inclusive, 0 for all folders
 
-def fixPath(path):
-  newPath = ''
-  for c in path:
-    if c == '\\':
-      newPath += '\\\\'
-    else:
-      newPath += c
-  return newPath
 
 # Checks if directory at path exists
 def checkDirectory(path):
@@ -74,6 +66,15 @@ def getArgs():
     if opt == '-w':
       global DEBUG
       DEBUG = False
+
+def fixPath(path):
+  newPath = ''
+  for c in path:
+    if c == '\\':
+      newPath += '\\\\'
+    else:
+      newPath += c
+  return newPath
 
 # main function that runs the overall find and replace function.
 def batchFileFindandReplace(n=""):
