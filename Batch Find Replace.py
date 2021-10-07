@@ -61,6 +61,7 @@ def checkUserMacros():
   if OFFSET < 0:
     print("ERROR: OFFSET cannot be less than zero\n")
     exit()
+  return True
 
 # Checks for correct command line arguments
 def getArgs():
