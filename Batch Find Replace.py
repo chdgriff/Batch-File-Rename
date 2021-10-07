@@ -16,14 +16,16 @@ REPLACE         = "Baki the Grappler "
 REMOVE_TOKENS   = False                   # Changing to true only removes tokens not find and replace.
 TOKEN           = '_'
 
-# Input number of files to be renamed as NUM_END
-NUM_START       = 1             # Default is 1 but can change to higher if you are lazy and didn't want to find file count by NUM_END-NUM_START+1
-NUM_END         = 0             # inclusive, default is 0 for all files found
+FILE_COUNT      = 0             # Default is 0 for all files found. 
 
 DEBUG           = True          # Default behavior requires "-w" flag to write filenames. Change to false to always write file names
 
-# If recuring through numbered directories e.g. folder1, folder2, folder3
+# If recuring through numbered directories e.g. folder01, folder02, folder03
+# Change NUM_START and NUM_END
 NUM_DIR         = False
+NUM_SIZE        = 2             # Change digit count for numbers i.e. 01 vs 001 vs 1
+NUM_START       = 1             
+NUM_END         = 0             # inclusive, 0 for all folders
 
 def fixPath(path):
   newPath = ''
@@ -45,14 +47,20 @@ def checkDirectory(path):
 def checkUserMacros():
   checkDirectory(DIRECTORY)
   if OFFSET < 0:
-      print("ERROR: OFFSET cannot be less than zero\n")
-      exit()
+    print("ERROR: OFFSET cannot be less than zero\n")
+    exit()
+  if FILE_COUNT < 0:
+    print("ERROR: FILE_COUNT must be 0 or greater")
+    exit()
+  if NUM_START < 0:
+    print("ERROR: NUM_START must be 0 or greater")
+    exit()
   if NUM_END < 0:
     print("ERROR: NUM_END must be 0 or greater")
     exit()
   if OFFSET < 0:
-      print("ERROR: OFFSET cannot be less than zero\n")
-      exit()
+    print("ERROR: OFFSET cannot be less than zero\n")
+    exit()
 
 # Checks for correct command line arguments
 def getArgs():
@@ -75,9 +83,9 @@ def batchFileFindandReplace(n=""):
   
   print("\nDirectory: \""+fileDir+"\"\n")
 
-  index = NUM_START
+  index = 0
   for fileName in os.listdir(fileDir):
-    if NUM_END and index > NUM_END:
+    if FILE_COUNT and index >= FILE_COUNT:
       break
     foundIndex = fileName.find(FIND)
     if foundIndex == -1:                 # If not found
@@ -137,22 +145,17 @@ def endingMessage(filesRenamed=0):
     else:
       print(str(filesRenamed) + " files renamed")
   print("======================================================================================\n")
-  
 
 def numberedDirectory():
   totalFilesRenamed = 0
   for num in range(NUM_START, NUM_END+1):
-    if NUM_END > 9:
-      number = str(num).zfill(2)
-    else:
-      number = str(num)
+    number = str(num).zfill(NUM_SIZE)
     filesRenamed = batchFileFindandReplace(number)
     endingMessage(filesRenamed)
     print("\n")
     totalFilesRenamed += filesRenamed
   print(str(totalFilesRenamed)+" files renamed in total")
   print("===================================================================================\n")
-
 
 def main():
   getArgs()
@@ -169,7 +172,6 @@ def main():
     else:
       filesRenamed = batchFileFindandReplace()
     endingMessage(filesRenamed)
-
 
 if __name__ == "__main__":
   main()
