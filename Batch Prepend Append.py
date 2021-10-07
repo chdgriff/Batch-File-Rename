@@ -78,7 +78,7 @@ def introMessage(s=""):
 def endingMessage(filesRenamed=0):
   print()
   if filesRenamed == 0:
-    print("No files found with \""+FIND+"\" Did you mean something else?\n")
+    print("No files found\n")
   else:
     if DEBUG:
       print(str(filesRenamed) + " files to be renamed")
