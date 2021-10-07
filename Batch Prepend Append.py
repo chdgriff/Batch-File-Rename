@@ -4,12 +4,12 @@ import os, string, sys, getopt
 # given directory.
 
 # To use input your specific values in the macros below.
-#
-
 DIRECTORY = "D:\Downloads\Grappler Baki\Season 2"
 
 PREPEND_OR_APPEND = 'P'                   # [A, P] Defaults to Prepend
 TEXT = " (2019) [1080p]"                  # text to be added (ignored if enumerating)
+
+APPEND_FILE_EXT = False                   # Defuault (False) is to append before file extension
 
 # If you want to enumerate the text to be added
 NUM = True           
@@ -19,8 +19,6 @@ DIGITS = 2                                # Number of digits for the number to a
 
 # Number of files to be renamed
 FILE_COUNT = 0              # inclusive (default 0 means all files found)
-NUM_START = 1
-NUM_END = 0                 # inclusive (0 means for all files)
 
 DEBUG = True              # change default behavior from requiring '-w' to write filenames
 
@@ -46,9 +44,9 @@ def batchPrependAppend(s=""):
     print("--------------------------------DEBUG--------------------------------")
   checkDirectory(fileDir)
   print("\nDirectory: \""+fileDir+"\"\n")
-  index = NUM_START
+  index = 0
   for fileName in os.listdir(fileDir):
-    if NUM_END and index > NUM_END:
+    if FILE_COUNT and index >= FILE_COUNT:
       break
 
     if NUM:
@@ -57,7 +55,10 @@ def batchPrependAppend(s=""):
       textToAdd = TEXT
 
     if PREPEND_OR_APPEND == 'A':
-      newName = os.path.splitext(fileName)[0]+textToAdd+os.path.splitext(fileName)[1]
+      if APPEND_FILE_EXT:
+        newName = fileName+textToAdd
+      else:
+        newName = os.path.splitext(fileName)[0]+textToAdd+os.path.splitext(fileName)[1]
     else:
       newName = textToAdd+fileName
 
@@ -69,9 +70,9 @@ def batchPrependAppend(s=""):
   return filesRenamed
 
 def introMessage(s=""):
-  print("=====================================================================")
+  print("===========================================================================")
   print("             Starting Batch File Prepend or Append")
-  print("=====================================================================")
+  print("===========================================================================")
 
 
 def endingMessage(filesRenamed=0):
@@ -87,7 +88,7 @@ def endingMessage(filesRenamed=0):
 def default():
   filesRenamed = batchPrependAppend()
   endingMessage(filesRenamed)
-  print("=====================================================================\n")
+  print("===========================================================================\n")
 
 def main():
   global DIRECTORY
