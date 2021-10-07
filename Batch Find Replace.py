@@ -3,20 +3,22 @@ import os, string, sys, getopt
 # This is a python script to find and replace file names in a
 # given directory.
 
+# ./Batch Find Replace.py             Test program and see filenames to be updated
+# ./Batch Find Replace.py -w          Write out and replace filenames
 # To use input the correct directory and options within the macros below.
 
-DIRECTORY       = "D:\Anime\Baki The Grappler\Season 01"          #Make sure to properly escape \N or \t to \\N and \\t respectively
+DIRECTORY       = "D:\Anime\Baki The Grappler\Season 01"        # Make sure to properly escape \N or \t to \\N and \\t respectively
 FIND            = "Baki The Grappler "
-OFFSET          = 0                         # Additonal characters to find and replace
+OFFSET          = 0                                            # Additonal characters to find and replace
 REPLACE         = "Baki the Grappler "
 
 # In case where file name is divided by tokens i.e a.file.name.pdf or a_file_name.pdf
 REMOVE_TOKENS   = False                   # Changing to true only removes tokens not find and replace.
 TOKEN           = '_'
 
-# number of files to be renamed
-NUM_START       = 1
-NUM_END         = 0          # inclusive, default is 0 for all files found
+# Input number of files to be renamed as NUM_END
+NUM_START       = 1             # Default is 1 but can change to higher if you are lazy and didn't want to find file count by NUM_END-NUM_START+1
+NUM_END         = 0             # inclusive, default is 0 for all files found
 
 DEBUG           = True          # Default behavior requires "-w" flag to write filenames. Change to false to always write file names
 
@@ -32,13 +34,25 @@ def fixPath(path):
       newPath += c
   return newPath
 
-
-# Checks if directory exists
+# Checks if directory at path exists
 def checkDirectory(path):
   if not os.path.isdir(path):
     print("ERROR: \""+path+"\" cannot be found")
     exit()
   return True
+
+# Checks Macros for valid values
+def checkUserMacros():
+  checkDirectory(DIRECTORY)
+  if OFFSET < 0:
+      print("ERROR: OFFSET cannot be less than zero\n")
+      exit()
+  if NUM_END < 0:
+    print("ERROR: NUM_END must be 0 or greater")
+    exit()
+  if OFFSET < 0:
+      print("ERROR: OFFSET cannot be less than zero\n")
+      exit()
 
 # Checks for correct command line arguments
 def getArgs():
@@ -87,8 +101,8 @@ def removeToken(token = '.'):
   introMessage("token")
   filesRenamed = 0
   fileDir = DIRECTORY
-  checkDirectory(fileDir)
 
+  index = NUM_START
   for fileName in os.listdir(fileDir):
     temp = fileName.split(token)
     if token == '.':
@@ -100,6 +114,7 @@ def removeToken(token = '.'):
       os.rename(fileDir+"/"+fileName, fileDir+"/"+newName)
     print(fileName + " --> " + newName)
     filesRenamed += 1
+    index += 1
   return filesRenamed
 
 def introMessage(opt="default"):
@@ -141,8 +156,8 @@ def numberedDirectory():
 
 def main():
   getArgs()
-  global DIRECTORY
-  #DIRECTORY = fixPath(DIRECTORY)
+  checkUserMacros()
+
   if not DEBUG:
     print("Confirm Rename")
     input()
