@@ -5,7 +5,7 @@ Open the file and specify the text and directory via the macros and the run the 
 
 Find and Replace Text:
 
-./Batch Find Replace.py             Test program and see filenames to be updated
+./Batch Find Replace.py             Test script and see filenames to be updated
 ./Batch Find Replace.py -w          Write out and replace filenames
 
 Append or Prepend to each filename:
