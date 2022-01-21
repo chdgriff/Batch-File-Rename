@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import filedialog
+from batch_find_replace import BatchFindReplace
 
 class BatchFileRename(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    self.file_path = StringVar()
+    self.file_path = StringVar(self, "D:/Downloads/Euphoria")
     
     container = Frame(self)
     container.pack(fill=BOTH, expand=True)
@@ -41,7 +42,6 @@ class ModeButtons(Frame):
 class FilePath(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
-    self.file_path = StringVar()
 
     label      = Label(self, text="Directory:")
     self.field = Entry(self, bd = 5, textvariable=controller.file_path, width=100)
@@ -57,27 +57,31 @@ class FilePath(Frame):
       
 class FindandReplace(Frame):
   def __init__(self, parent, controller):
+    self.controller = controller
     super().__init__(parent)
 
-    self.find_text = StringVar(self)
+    self.find_text = StringVar(self, "euphoria.us.s02e01.1080p.web.h264-cakes")
     self.offset = StringVar(self, '0')
-    self.replace_text = StringVar(self)
+    self.replace_text = StringVar(self, "Euphoria")
     self.file_count = StringVar(self, '0')
+    self.log = StringVar(self)
 
     container = Frame(self)
     container.pack(expand=True, fill=BOTH)
     container.columnconfigure(0, weight=1)
     container.rowconfigure(1, weight=1)
     _FindandReplaceFields(parent=container, controller=self).grid(row=0, column=0, sticky="W")
-    Log(parent=container, controller=self, message="").grid(row=1, column=0, sticky="NSEW")
+    Log(parent=container, controller=self).grid(row=1, column=0)
     _FindandReplaceButtons(parent=container, controller=self).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    pass
+    self.log.set(BatchFindReplace(self.controller.file_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), int(self.file_count.get()), debug).run())
+    print(self.log.get())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
+    self.controller = controller
 
     find_field = Entry(self, bd=2, textvariable=controller.find_text, width=50)
     offset_field = Entry(self, bd=2, width=3, textvariable=controller.offset)
@@ -96,8 +100,8 @@ class _FindandReplaceFields(Frame):
 class _FindandReplaceButtons(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
-    Button(self, text="Test Adjustments").pack(side=LEFT)
-    Button(self, text="Save Adjustments").pack(side=LEFT)
+    Button(self, text="Test Adjustments", command=lambda: controller.call_find_replace()).pack(side=LEFT)
+    Button(self, text="Save Adjustments", command=lambda: controller.call_find_replace(debug=False)).pack(side=LEFT)
 
 class PrependAppend(Frame):
   def __init__(self, parent, controller):
@@ -105,11 +109,23 @@ class PrependAppend(Frame):
 
     Label(self, text="Prepend or Append").pack()
 
-class Log(Frame):
-  def __init__(self, parent, controller, message=""):
-    super().__init__(parent, width=100, height=100, bg="white")
+class RemoveToken(Frame):
+  def __init__(self, parent, controller):
+    super().__init__(parent)
 
-    Message(self, bg="white", justify=LEFT, text=message).pack(expand=True)
+    Label(self, text="Prepend or Append").pack()
+
+# class PrependAppend(Frame):
+#   def __init__(self, parent, controller):
+#     super().__init__(parent)
+
+#     Label(self, text="Prepend or Append").pack()
+
+class Log(Frame):
+  def __init__(self, parent, controller):
+    super().__init__(parent, bg="white")
+
+    Message(self, bg="white", justify=LEFT, aspect=500, textvariable=controller.log).pack()
 
 def main():
   app = BatchFileRename()
