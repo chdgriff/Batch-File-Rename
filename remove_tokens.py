@@ -1,6 +1,6 @@
 import os
 from core import *
-from Ignored_Files import fileList as ignored_files
+from Ignored_Files import file_list as ignored_files
 
 class BatchRemoveTokens(BatchFileNameOperations):
   def __init__(self, file_path, file_count, token, debug) -> None:
