@@ -17,7 +17,7 @@ class BatchFindReplace():
     if not self.checkVars(): return self.error_msg
     files_renamed = self.batchFileFindandReplace()
     self.endingMessage(files_renamed)
-    
+    return self.stringifyLog()
 
   # Checks variables for valid values
   def checkVars(self):
@@ -78,3 +78,8 @@ class BatchFindReplace():
       else:
         self.log.append(str(filesRenamed) + " files renamed")
     self.log.append("======================================================================================\n")
+
+  def stringifyLog(self):
+    log_string = ""
+    return '\n'.join(self.log)
+
