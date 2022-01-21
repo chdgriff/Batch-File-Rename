@@ -15,6 +15,7 @@ class BatchFileNameOperations():
     if self.file_count < 0:
       self.error_msg = "ERROR: file count must be 0 or greater"
       return False
+    return True
 
   def stringify_log(self):
     log = '\n'.join(self.log)
