@@ -1,4 +1,5 @@
 import os, string, sys, getopt
+from Ignored_Files import fileList as ignoredFiles
 
 # This is a python script to find and replace file names in a
 # given directory.
@@ -7,14 +8,16 @@ import os, string, sys, getopt
 # ./Batch Find Replace.py -w          Write out and replace filenames
 # To use input the correct directory and options within the macros below.
 
-DIRECTORY       = "D:\Anime\Baki The Grappler\Season 01"        # Make sure to properly escape \N or \t to \\N and \\t respectively
-FIND            = "Baki The Grappler "
-OFFSET          = 0                                            # Additonal characters to find and replace
-REPLACE         = "Baki the Grappler "
+DIRECTORY       = "D:\Downloads\One Piece"        # Make sure to properly escape \N or \t to \\N and \\t respectively
+FIND            = " [1080p][Multiple Subtitle]"
+
+
+OFFSET          = 10                                            # Additonal characters to find and replace
+REPLACE         = " (2021) [1080p]"
 
 # In case where file name is divided by tokens i.e a.file.name.pdf or a_file_name.pdf
 REMOVE_TOKENS   = False                   # Changing to true only removes tokens not find and replace.
-TOKEN           = '_'
+TOKEN           = '.'
 
 FILE_COUNT      = 0             # Default is 0 for all files found. 
 
@@ -87,11 +90,11 @@ def batchFileFindandReplace(n=""):
 
   index = 0
   for fileName in os.listdir(fileDir):
-    if FILE_COUNT and index >= FILE_COUNT:
-      break
+    if FILE_COUNT and index >= FILE_COUNT: break
+    if fileName in ignoredFiles: continue
+
     foundIndex = fileName.find(FIND)
-    if foundIndex == -1:                 # If not found
-      continue
+    if foundIndex == -1:continue
 
     nextChar = foundIndex + len(FIND) + OFFSET # Finds the next character after text
  

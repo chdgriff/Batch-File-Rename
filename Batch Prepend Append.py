@@ -1,24 +1,26 @@
 import os, string, sys, getopt
+from Ignored_Files import fileList as ignoredFiles
 
 # This is a python script to prepend or append text and numbers to files in a
 # given directory.
 
 # To use input your specific values in the macros below.
-DIRECTORY = "D:\Downloads\Grappler Baki\Season 2"
+DIRECTORY = "D:\Media\TV Shows\Euphoria"
 
-PREPEND_OR_APPEND = 'P'                   # [A, P] Defaults to Prepend
+PREPEND_OR_APPEND = 'A'                   # [A, P] Defaults to Prepend
 TEXT = " (2019) [1080p]"                  # text to be added (ignored if enumerating)
 
 APPEND_FILE_EXT = False                   # Defuault (False) is to append before file extension
 
 # If you want to enumerate the text to be added
-NUM = True           
-NUM_L = "Baki The Grappler S02E"          # text{number}
+NUM = False          
+NUM_L = "One Piece S21E"          # text{number}
 NUM_R = ""                                # {number}text
-DIGITS = 2                                # Number of digits for the number to add e.g. 001 vs 1
+DIGITS = 3                                # Number of digits for the number to add e.g. 001 vs 1
+NUM_START = 109
 
 # Number of files to be renamed
-FILE_COUNT = 0              # inclusive (default 0 means all files found)
+FILE_COUNT = 32              # inclusive (default 0 means all files found)
 
 DEBUG = True              # change default behavior from requiring '-w' to write filenames
 
@@ -48,9 +50,11 @@ def batchPrependAppend(s=""):
   for fileName in os.listdir(fileDir):
     if FILE_COUNT and index >= FILE_COUNT:
       break
+    if fileName in ignoredFiles:
+      continue
 
     if NUM:
-      textToAdd = NUM_L+str(index).zfill(DIGITS)+NUM_R
+      textToAdd = NUM_L+str(index+NUM_START).zfill(DIGITS)+NUM_R
     else:
       textToAdd = TEXT
 
