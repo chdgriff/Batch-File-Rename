@@ -14,20 +14,15 @@ class BatchFindReplace(BatchFileOperations):
     self.error_msg = ""
 
   def run(self):
-    if not super().check_core_vars() or not self.check_vars(): return self.error_msg
+    if not self.check_vars(): return self.error_msg
     self.find_and_replace()
     return super().stringify_log()
 
   # Checks variables for valid values
   def check_vars(self):
-    if not super().check_file_path():
-      self.error_msg = "ERROR: \""+self.file_path+"\" cannot be found"
-      return False
+    if not super().check_core_vars(): return False
     if self.offset < 0:
       self.error_msg = "ERROR: offset cannot be less than zero"
-      return False
-    if self.file_count < 0:
-      self.error_msg = "ERROR: file count must be 0 or greater"
       return False
     return True
 
