@@ -14,13 +14,13 @@ class BatchFindReplace():
 
     self.error_msg = ""
 
-    if not self.checkVars(): return self.error_msg
-    files_renamed = self.batchFileFindandReplace()
-    self.endingMessage(files_renamed)
-    return self.stringifyLog()
+    if not self.check_vars(): return self.error_msg
+    files_renamed = self.find_and_replace()
+    self.end_message(files_renamed)
+    return self.stringify_log()
 
   # Checks variables for valid values
-  def checkVars(self):
+  def check_vars(self):
     if not os.path.isdir(self.file_path):
       self.error_msg = "ERROR: \""+self.file_path+"\" cannot be found"
       return False
@@ -33,8 +33,8 @@ class BatchFindReplace():
     return True
 
   # main function that runs the overall find and replace function.
-  def batchFileFindandReplace(self, n=""):
-    self.introMessage()
+  def find_and_replace(self, n=""):
+    self.intro_message()
     fileDir = self.file_path + n
     filesRenamed = 0
     
@@ -60,15 +60,15 @@ class BatchFindReplace():
       print(fileName + " --> " + newName)
       filesRenamed += 1
       index += 1
-    self.endingMessage(filesRenamed)
+    self.end_message(filesRenamed)
 
-  def introMessage(self):
+  def intro_message(self):
     self.log.append("======================================================================================")
     self.log.append("                    Starting Batch File Name Find and Replace")
     self.log.append("======================================================================================")
   
 
-  def endingMessage(self, filesRenamed=0):
+  def end_message(self, filesRenamed=0):
     self.log.append("\n")
     if filesRenamed == 0:
       self.log.append("No files found with \""+self.find_text+"\" Did you mean something else?")
@@ -79,7 +79,7 @@ class BatchFindReplace():
         self.log.append(str(filesRenamed) + " files renamed")
     self.log.append("======================================================================================\n")
 
-  def stringifyLog(self):
+  def stringify_log(self):
     log_string = ""
     return '\n'.join(self.log)
 
