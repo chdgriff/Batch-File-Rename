@@ -1,0 +1,10 @@
+# Ignore Mac system files
+.DS_store
+
+#Ignore Windows system files
+desktop.ini
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
