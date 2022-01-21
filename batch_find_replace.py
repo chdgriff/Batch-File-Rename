@@ -1,5 +1,6 @@
 import os
 from Ignored_Files import fileList as ignoredFiles
+from helpers import stringify_log
 
 class BatchFindReplace():
   def __init__(self, file_path, find_text, offset, replace_text, file_count, debug=True):
@@ -16,7 +17,7 @@ class BatchFindReplace():
   def run(self):
     if not self.check_vars(): return self.error_msg
     self.find_and_replace()
-    return self.stringify_log()
+    return stringify_log(self.log)
 
   # Checks variables for valid values
   def check_vars(self):
@@ -77,8 +78,4 @@ class BatchFindReplace():
       # else:
       #   self.log.append(str(files_renamed) + " files" if file_renamed>0 else + " renamed")
     self.log.append("=====================================================================================\n")
-
-  def stringify_log(self):
-    log_string = ""
-    return '\n'.join(self.log)
 
