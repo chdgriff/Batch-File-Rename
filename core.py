@@ -17,7 +17,9 @@ class BatchFileOperations():
       return False
 
   def stringify_log(self):
-    return '\n'.join(self.log)
+    log = '\n'.join(self.log)
+    print(log)
+    return log
 
   def check_file_path(self):
     return os.path.isdir(self.file_path)
