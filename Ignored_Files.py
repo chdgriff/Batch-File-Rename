@@ -1,3 +1,3 @@
-ignoredFiles = [
+fileList = [
   "desktop.ini"
 ]
