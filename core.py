@@ -1,6 +1,6 @@
 import os
 
-class BatchFileOperations():
+class BatchFileNameOperations():
   def __init__(self, file_path, file_count, debug=True) -> None:
       self.file_path = file_path
       self.file_count = file_count

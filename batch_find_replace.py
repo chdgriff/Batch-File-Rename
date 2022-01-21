@@ -2,7 +2,7 @@ import os
 from Ignored_Files import file_list as ignored_files
 from core import *
 
-class BatchFindReplace(BatchFileOperations):
+class BatchFindReplace(BatchFileNameOperations):
   def __init__(self, file_path, find_text, offset, replace_text, file_count, debug=True):
     super().__init__(file_path, file_count, debug)
     self.file_path = file_path
