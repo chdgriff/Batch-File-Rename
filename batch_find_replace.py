@@ -72,10 +72,6 @@ class BatchFindReplace():
     if files_renamed == 0:
       self.log.append("\nNo files found with \""+self.find_text+"\" Did you mean something else?")
     else:
-      # if self.debug:
-
       self.log.append("\n" + str(files_renamed) + (" files" if files_renamed>1 else " file")+(" to be" if self.debug else '') + " renamed")
-      # else:
-      #   self.log.append(str(files_renamed) + " files" if file_renamed>0 else + " renamed")
     self.log.append("=====================================================================================\n")
 
