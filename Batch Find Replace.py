@@ -1,5 +1,4 @@
 import os, string, sys, getopt
-from tkinter import filedialog
 from Ignored_Files import fileList as ignoredFiles
 
 class BatchFindReplace():
@@ -36,31 +35,31 @@ class BatchFindReplace():
   def find_and_replace(self, n=""):
     self.intro_message()
     fileDir = self.file_path + n
-    filesRenamed = 0
+    files_renamed = 0
     
     self.log.append("\nDirectory: \""+fileDir+"\"\n")
 
     index = 0
-    for fileName in os.listdir(fileDir):
+    for file_name in os.listdir(fileDir):
       if self.file_count and index >= self.file_count: break
-      if fileName in ignoredFiles: continue
+      if file_name in ignoredFiles: continue
 
-      foundIndex = fileName.find(self.find_text)
-      if foundIndex == -1:continue
+      found_idx = file_name.find(self.find_text)
+      if found_idx == -1:continue
 
-      nextChar = foundIndex + len(self.find_text) + self.offset # Finds the next character after text
+      nextChar = found_idx + len(self.find_text) + self.offset # Finds the next character after text
   
-      if nextChar >= len(fileName):   # If text found at the end of the filename
-        newName = fileName[:foundIndex] + self.replace_text
+      if nextChar >= len(file_name):   # If text found at the end of the filename
+        new_name = file_name[:found_idx] + self.replace_text
       else:
-        newName = fileName[:foundIndex] + self.replace_text + fileName[nextChar:]
+        new_name = file_name[:found_idx] + self.replace_text + file_name[nextChar:]
 
       if not self.debug:
-        os.rename(fileDir+"/"+fileName, fileDir+"/"+newName)
-      print(fileName + " --> " + newName)
-      filesRenamed += 1
+        os.rename(fileDir+"/"+file_name, fileDir+"/"+new_name)
+      print(file_name + " --> " + new_name)
+      files_renamed += 1
       index += 1
-    self.end_message(filesRenamed)
+    self.end_message(files_renamed)
 
   def intro_message(self):
     self.log.append("======================================================================================")
@@ -68,15 +67,15 @@ class BatchFindReplace():
     self.log.append("======================================================================================")
   
 
-  def end_message(self, filesRenamed=0):
+  def end_message(self, files_renamed=0):
     self.log.append("\n")
-    if filesRenamed == 0:
+    if files_renamed == 0:
       self.log.append("No files found with \""+self.find_text+"\" Did you mean something else?")
     else:
       if self.debug:
-        self.log.append(str(filesRenamed) + " files to be renamed")
+        self.log.append(str(files_renamed) + " files to be renamed")
       else:
-        self.log.append(str(filesRenamed) + " files renamed")
+        self.log.append(str(files_renamed) + " files renamed")
     self.log.append("======================================================================================\n")
 
   def stringify_log(self):
