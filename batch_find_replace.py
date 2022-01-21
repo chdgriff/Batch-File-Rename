@@ -1,5 +1,5 @@
 import os
-from Ignored_Files import fileList as ignoredFiles
+from Ignored_Files import file_list as ignored_files
 from core import *
 
 class BatchFindReplace(BatchFileOperations):
@@ -29,15 +29,15 @@ class BatchFindReplace(BatchFileOperations):
   # main function that runs the overall find and replace function.
   def find_and_replace(self, n=""):
     self.intro_message()
-    fileDir = self.file_path + n
+    file_directory = self.file_path + n
     files_renamed = 0
     
-    self.log.append("Directory: \""+fileDir+"\"\n")
+    self.log.append("Directory: \""+file_directory+"\"\n")
 
     index = 0
-    for file_name in os.listdir(fileDir):
+    for file_name in os.listdir(file_directory):
       if self.file_count and index >= self.file_count: break
-      if file_name in ignoredFiles: continue
+      if file_name in ignored_files: continue
 
       found_idx = file_name.find(self.find_text)
       if found_idx == -1: continue
@@ -50,7 +50,7 @@ class BatchFindReplace(BatchFileOperations):
         new_name = file_name[:found_idx] + self.replace_text + file_name[nextChar:]
 
       if not self.debug:
-        os.rename(fileDir+"/"+file_name, fileDir+"/"+new_name)
+        os.rename(file_directory+"/"+file_name, file_directory+"/"+new_name)
       self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1
