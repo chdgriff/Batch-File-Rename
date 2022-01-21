@@ -14,7 +14,7 @@ class BatchFindReplace(BatchFileOperations):
     self.error_msg = ""
 
   def run(self):
-    if not self.check_vars(): return self.error_msg
+    if not super().check_core_vars() or not self.check_vars(): return self.error_msg
     self.find_and_replace()
     return super().stringify_log()
 
