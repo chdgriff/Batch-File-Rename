@@ -1,5 +1,5 @@
 import os, string, sys, getopt
-from Ignored_Files import fileList as ignoredFiles
+from Ignored_Files import file_list as ignoredFiles
 
 # This is a python script to prepend or append text and numbers to files in a
 # given directory.
