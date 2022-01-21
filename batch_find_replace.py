@@ -1,4 +1,4 @@
-import os, string, sys, getopt
+import os
 from Ignored_Files import fileList as ignoredFiles
 
 class BatchFindReplace():
@@ -13,9 +13,9 @@ class BatchFindReplace():
 
     self.error_msg = ""
 
+  def run(self):
     if not self.check_vars(): return self.error_msg
-    files_renamed = self.find_and_replace()
-    self.end_message(files_renamed)
+    self.find_and_replace()
     return self.stringify_log()
 
   # Checks variables for valid values
@@ -37,7 +37,7 @@ class BatchFindReplace():
     fileDir = self.file_path + n
     files_renamed = 0
     
-    self.log.append("\nDirectory: \""+fileDir+"\"\n")
+    self.log.append("Directory: \""+fileDir+"\"\n")
 
     index = 0
     for file_name in os.listdir(fileDir):
@@ -45,7 +45,7 @@ class BatchFindReplace():
       if file_name in ignoredFiles: continue
 
       found_idx = file_name.find(self.find_text)
-      if found_idx == -1:continue
+      if found_idx == -1: continue
 
       nextChar = found_idx + len(self.find_text) + self.offset # Finds the next character after text
   
@@ -56,27 +56,27 @@ class BatchFindReplace():
 
       if not self.debug:
         os.rename(fileDir+"/"+file_name, fileDir+"/"+new_name)
-      print(file_name + " --> " + new_name)
+      self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1
     self.end_message(files_renamed)
 
   def intro_message(self):
-    self.log.append("======================================================================================")
-    self.log.append("                    Starting Batch File Name Find and Replace")
-    self.log.append("======================================================================================")
+    self.log.append("\n=====================================================================================")
+    self.log.append("{:^90s}".format("Starting Batch File Name Find and Replace"))
+    self.log.append("=====================================================================================")
   
 
   def end_message(self, files_renamed=0):
-    self.log.append("\n")
     if files_renamed == 0:
-      self.log.append("No files found with \""+self.find_text+"\" Did you mean something else?")
+      self.log.append("\nNo files found with \""+self.find_text+"\" Did you mean something else?")
     else:
-      if self.debug:
-        self.log.append(str(files_renamed) + " files to be renamed")
-      else:
-        self.log.append(str(files_renamed) + " files renamed")
-    self.log.append("======================================================================================\n")
+      # if self.debug:
+
+      self.log.append("\n" + str(files_renamed) + (" files" if files_renamed>1 else " file")+(" to be" if self.debug else '') + " renamed")
+      # else:
+      #   self.log.append(str(files_renamed) + " files" if file_renamed>0 else + " renamed")
+    self.log.append("=====================================================================================\n")
 
   def stringify_log(self):
     log_string = ""
