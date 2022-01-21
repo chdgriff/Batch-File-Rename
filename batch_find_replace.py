@@ -1,7 +1,6 @@
 import os
 from Ignored_Files import fileList as ignoredFiles
-from helpers import stringify_log
-from core import BatchFileOperations
+from core import *
 
 class BatchFindReplace(BatchFileOperations):
   def __init__(self, file_path, find_text, offset, replace_text, file_count, debug=True):
@@ -17,11 +16,11 @@ class BatchFindReplace(BatchFileOperations):
   def run(self):
     if not self.check_vars(): return self.error_msg
     self.find_and_replace()
-    return stringify_log(self.log)
+    return super().stringify_log()
 
   # Checks variables for valid values
   def check_vars(self):
-    if not os.path.isdir(self.file_path):
+    if not super().check_file_path():
       self.error_msg = "ERROR: \""+self.file_path+"\" cannot be found"
       return False
     if self.offset < 0:
