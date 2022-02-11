@@ -65,6 +65,7 @@ class FindandReplaceFrame(Frame):
     self.offset = StringVar(self, '0')
     self.replace_text = StringVar(self, "")
     self.file_count = StringVar(self, '0')
+    self.ignore_case = BooleanVar(self, False)
     self.log = StringVar(self)
 
     container = Frame(self)
@@ -77,7 +78,7 @@ class FindandReplaceFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    self.log.set(BatchFindReplace(self.controller.file_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), int(self.file_count.get()), debug).run())
+    self.log.set(BatchFindReplace(self.controller.file_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), int(self.file_count.get()), debug).run())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
@@ -86,16 +87,19 @@ class _FindandReplaceFields(Frame):
 
     find_field = Entry(self, bd=2, textvariable=controller.find_text, width=50)
     offset_field = Entry(self, bd=2, width=3, textvariable=controller.offset)
+    ignore_case_field = Checkbutton(self, offvalue=False, onvalue=True, variable=controller.ignore_case)
     replace_field = Entry(self, bd=2, textvariable=controller.replace_text, width=50)
     file_count_field = Entry(self, bd=2, width=3, textvariable=controller.file_count)
 
-    Label(self, text="Find:").grid(row=0, column=0, sticky="W")
+    Label(self, text="Find: ").grid(row=0, column=0, sticky="W")
     find_field.grid(row=0, column=1)
     Label(self, text="Offset:").grid(row=1, column=0, sticky="W")
     offset_field.grid(row=1, column=1, sticky="W")
-    Label(self, text="Replace:").grid(row=2, column=0, sticky="W")
+    Label(self, text="Ignore Case: ").grid(row=1, column=2, sticky="W")
+    ignore_case_field.grid(row=1, column=3, sticky="W")
+    Label(self, text="Replace: ").grid(row=2, column=0, sticky="W")
     replace_field.grid(row=2, column=1)
-    Label(self, text="File Count:").grid(row=3, column= 0, sticky="W")
+    Label(self, text="File Count: ").grid(row=3, column= 0, sticky="W")
     file_count_field.grid(row=3, column=1, sticky="W")
 
 class PrependAppendFrame(Frame):

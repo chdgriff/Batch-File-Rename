@@ -3,13 +3,14 @@ from Ignored_Files import file_list as ignored_files
 from core import *
 
 class BatchFindReplace(BatchFileNameOperations):
-  def __init__(self, file_path, find_text, offset, replace_text, file_count, debug=True):
+  def __init__(self, file_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
     super().__init__(file_path, file_count, debug)
     self.file_path = file_path
     self.find_text = find_text
     self.offset = offset
     self.replace_text = replace_text
-    self.log = []
+    self.ignore_case = ignore_case
+    self.find_text = find_text.upper() if self.ignore_case else find_text
 
     self.error_msg = ""
 
@@ -39,10 +40,14 @@ class BatchFindReplace(BatchFileNameOperations):
       if self.file_count and index >= self.file_count: break
       if file_name in ignored_files: continue
 
-      found_idx = file_name.find(self.find_text)
+      found_idx = (file_name.upper() if self.ignore_case else file_name).find(self.find_text)
       if found_idx == -1: continue
 
+
+      file_extension_idx = file_name.rfind('.')
       nextChar = found_idx + len(self.find_text) + self.offset # Finds the next character after text
+      if nextChar > file_extension_idx: nextChar = file_extension_idx
+      
   
       if nextChar >= len(file_name):   # If text found at the end of the filename
         new_name = file_name[:found_idx] + self.replace_text
