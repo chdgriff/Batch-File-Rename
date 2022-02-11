@@ -61,9 +61,9 @@ class FindandReplaceFrame(Frame):
     self.controller = controller
     super().__init__(parent)
 
-    self.find_text = StringVar(self, "euphoria.us.s02e01.1080p.web.h264-cakes")
+    self.find_text = StringVar(self, "")
     self.offset = StringVar(self, '0')
-    self.replace_text = StringVar(self, "Euphoria")
+    self.replace_text = StringVar(self, "")
     self.file_count = StringVar(self, '0')
     self.log = StringVar(self)
 
@@ -123,7 +123,7 @@ class RemoveTokenFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_remove_token).grid(row=2, column=0)
   
   def call_remove_token(self, debug=True):
-    self.log.set(BatchRemoveTokens(self.controller.file_path.get(), int(self.file_count.get()), self.token.get(), debug))
+    self.log.set(BatchRemoveTokens(self.controller.file_path.get(), int(self.file_count.get()), self.token.get(), debug).run())
 
 class _RemoveTokenFields(Frame):
   def __init__(self, parent, controller) -> None:

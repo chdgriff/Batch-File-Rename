@@ -9,16 +9,18 @@ class BatchRemoveTokens(BatchFileNameOperations):
 
   def run(self):
     if not self.check_vars(): return self.error_msg
-    self.removeTokens()
-    super().stringify_log
+    self.remove_tokens()
+    return super().stringify_log()
 
   def check_vars(self):
     if not super().check_core_vars(): return False
     return True
 
-  def removeTokens(self):
+  def remove_tokens(self):
     self.intro_message()
     files_renamed = 0
+
+    self.log.append("Directory: \""+self.file_path+"\"\n")
 
     index = 0
     for file_name in os.listdir(self.file_path):
