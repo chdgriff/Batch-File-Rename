@@ -3,8 +3,8 @@ from Ignored_Files import file_list as ignored_files
 from core import *
 
 class BatchFindReplace(BatchFileNameOperations):
-  def __init__(self, file_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
-    super().__init__(file_path, file_count, debug)
+  def __init__(self, dir_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
+    super().__init__(dir_path, file_count, debug)
     self.find_text = find_text
     self.offset = offset
     self.replace_text = replace_text
@@ -29,7 +29,7 @@ class BatchFindReplace(BatchFileNameOperations):
   # main function that runs the overall find and replace function.
   def find_and_replace(self, n=""):
     self.intro_message()
-    file_directory = self.file_path + n
+    file_directory = self.dir_path + n
     files_renamed = 0
     
     self.log.append("Directory: \""+file_directory+"\"\n")

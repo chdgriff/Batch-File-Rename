@@ -7,7 +7,7 @@ from remove_tokens import BatchRemoveTokens
 class BatchFileRename(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
-    self.file_path = StringVar(self)
+    self.dir_path = StringVar(self)
 
     container = Frame(self)
     container.pack(fill=BOTH, expand=True)
@@ -52,7 +52,7 @@ class FilePathFrame(Frame):
 
     # Entries for browse directory field
     label      = Label(self, text="Directory:")
-    self.field = Entry(self, bd = 5, textvariable=controller.file_path, width=100)
+    self.field = Entry(self, bd = 5, textvariable=controller.dir_path, width=100)
     browse_btn = Button(self, text="...", command=self.browse_directories)
 
     # Packs the entries on the frame
@@ -63,7 +63,7 @@ class FilePathFrame(Frame):
   def browse_directories(self):
     input_dir_path = filedialog.askdirectory()
     if input_dir_path:
-      self.controller.file_path.set(input_dir_path)
+      self.controller.dir_path.set(input_dir_path)
       
 class FindandReplaceFrame(Frame):
   def __init__(self, parent, controller):
@@ -88,7 +88,7 @@ class FindandReplaceFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    self.log.set(BatchFindReplace(self.controller.file_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), int(self.file_count.get()), debug).run())
+    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), int(self.file_count.get()), debug).run())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
@@ -141,7 +141,7 @@ class RemoveTokenFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_remove_token).grid(row=2, column=0)
   
   def call_remove_token(self, debug=True):
-    self.log.set(BatchRemoveTokens(self.controller.file_path.get(), int(self.file_count.get()), self.token.get(), debug).run())
+    self.log.set(BatchRemoveTokens(self.controller.dir_path.get(), int(self.file_count.get()), self.token.get(), debug).run())
 
 class _RemoveTokenFields(Frame):
   def __init__(self, parent, controller) -> None:

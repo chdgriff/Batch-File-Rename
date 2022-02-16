@@ -8,7 +8,7 @@ class BatchFileNameOperations():
   -----------
   Attributes:
   -----------
-  file_path : str
+  dir_path : str
     The path to files.
   file_count : int
     The number of files to run the operations on.
@@ -22,8 +22,8 @@ class BatchFileNameOperations():
     Runs error checking on the core variables.
   stringify_log() --> str
   """
-  def __init__(self, file_path, file_count, debug=True) -> None:
-    self.file_path = file_path
+  def __init__(self, dir_path, file_count, debug=True) -> None:
+    self.dir_path = dir_path
     self.file_count = file_count
     self.debug = debug
     self.log = []
@@ -31,8 +31,8 @@ class BatchFileNameOperations():
   
   def check_core_vars(self) -> bool:
     """Runs error checking on the core variables."""
-    if not self._check_file_path():
-      self.error_msg = "ERROR: \""+self.file_path+"\" cannot be found"
+    if not self._check_dir_path():
+      self.error_msg = "ERROR: \""+self.dir_path+"\" cannot be found"
       return False
     if self.file_count < 0:
       self.error_msg = "ERROR: file count must be 0 or greater"
@@ -45,6 +45,6 @@ class BatchFileNameOperations():
     print(log)
     return log
 
-  def _check_file_path(self) -> bool:
+  def _check_dir_path(self) -> bool:
     """Checks if directory exists"""
-    return os.path.isdir(self.file_path)
+    return os.path.isdir(self.dir_path)

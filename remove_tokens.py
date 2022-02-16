@@ -3,8 +3,8 @@ from core import *
 from Ignored_Files import file_list as ignored_files
 
 class BatchRemoveTokens(BatchFileNameOperations):
-  def __init__(self, file_path, file_count, token, debug) -> None:
-    super().__init__(file_path, file_count, debug)
+  def __init__(self, dir_path, file_count, token, debug) -> None:
+    super().__init__(dir_path, file_count, debug)
     self.token = token
 
   def run(self):
@@ -20,10 +20,10 @@ class BatchRemoveTokens(BatchFileNameOperations):
     self.intro_message()
     files_renamed = 0
 
-    self.log.append("Directory: \""+self.file_path+"\"\n")
+    self.log.append("Directory: \""+self.dir_path+"\"\n")
 
     index = 0
-    for file_name in os.listdir(self.file_path):
+    for file_name in os.listdir(self.dir_path):
       if file_name in ignored_files: continue
       if self.file_count and index >= self.file_count: break
       
@@ -34,7 +34,7 @@ class BatchRemoveTokens(BatchFileNameOperations):
         new_name = ' '.join(temp)
 
       if not self.debug:
-        os.rename(self.file_path+"/"+file_name, self.file_path+"/"+new_name)
+        os.rename(self.dir_path+"/"+file_name, self.dir_path+"/"+new_name)
       self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1
