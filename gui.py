@@ -78,11 +78,13 @@ class FindandReplaceFrame(Frame):
     self.ignore_case = BooleanVar(self, False)
     self.log = StringVar(self)
 
+    # Container setup
     container = Frame(self)
     container.pack(expand=True, fill=BOTH)
     container.columnconfigure(0, weight=1)
     container.rowconfigure(1, weight=1)
 
+    # Child frames
     _FindandReplaceFields(parent=container, controller=self).grid(row=0, column=0, sticky="W")
     Log(parent=container, controller=self).grid(row=1, column=0)
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
