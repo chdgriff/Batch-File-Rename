@@ -5,7 +5,6 @@ from core import *
 class BatchFindReplace(BatchFileNameOperations):
   def __init__(self, file_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
     super().__init__(file_path, file_count, debug)
-    self.file_path = file_path
     self.find_text = find_text
     self.offset = offset
     self.replace_text = replace_text
