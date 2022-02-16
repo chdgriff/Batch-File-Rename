@@ -172,7 +172,7 @@ class Log(Frame):
 class RunButtons(Frame):
   def __init__(self, parent, controller, function):
     super().__init__(parent)
-    Button(self, text="Test Adjustments", command=lambda: self.confirm_test(function)).pack(side=LEFT)
+    Button(self, text="Test Adjustments", command=lambda: function()).pack(side=LEFT)
     Button(self, text="Save Adjustments", command=lambda: self.confirm_save(function)).pack(side=LEFT)
 
   def confirm_save(self, function):
