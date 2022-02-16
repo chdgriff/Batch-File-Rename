@@ -7,23 +7,25 @@ from remove_tokens import BatchRemoveTokens
 class BatchFileRename(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
+    self.file_path = StringVar(self)
 
-    self.file_path = StringVar(self, "D:/Downloads/Euphoria")
-    
     container = Frame(self)
     container.pack(fill=BOTH, expand=True)
     
+    # Adds header frames
     row_idx = 0
     for F in (ModeButtonsFrame, FilePathFrame):
       F(parent = container, controller = self).grid(row=row_idx, column=0, sticky="W")
       row_idx += 1
 
+    # Main function frames
     self.modes = {}
     for F in (FindandReplaceFrame, RemoveTokenFrame, PrependAppendFrame):
       frame = F(parent = container, controller = self)
       self.modes[F.__name__] = frame
       frame.grid(row=row_idx, column=0, sticky="nsew")
 
+    # Default Frame
     self.show_frame("FindandReplaceFrame")
 
   def show_frame(self, page_name):
@@ -55,7 +57,9 @@ class FilePathFrame(Frame):
     browse_btn.pack(side=LEFT)
 
   def browse_directories(self):
-    self.controller.file_path.set(filedialog.askdirectory())
+    input_dir_path = filedialog.askdirectory()
+    if input_dir_path:
+      self.controller.file_path.set(input_dir_path)
       
 class FindandReplaceFrame(Frame):
   def __init__(self, parent, controller):
