@@ -35,10 +35,12 @@ class ModeButtonsFrame(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
 
+    # Buttons for all the modes
     find_replace_btn = Button(self, text = "Find and Replace", command = lambda: controller.show_frame("FindandReplaceFrame"))
     remove_token_btn = Button(self, text = "Remove Token", command = lambda: controller.show_frame("RemoveTokenFrame"))
     prepend_append_btn = Button(self, text = "Prepend or Append", command = lambda: controller.show_frame("PrependAppendFrame"))    
-
+    
+    # Packs the buttons on the frame
     find_replace_btn.pack(side=LEFT)
     remove_token_btn.pack(side=LEFT)
     prepend_append_btn.pack(side=LEFT)
@@ -48,10 +50,12 @@ class FilePathFrame(Frame):
     super().__init__(parent)
     self.controller = controller
 
+    # Entries for browse directory field
     label      = Label(self, text="Directory:")
     self.field = Entry(self, bd = 5, textvariable=controller.file_path, width=100)
     browse_btn = Button(self, text="...", command=self.browse_directories)
 
+    # Packs the entries on the frame
     label.pack(side=LEFT)
     self.field.pack(side=LEFT)
     browse_btn.pack(side=LEFT)
@@ -66,6 +70,7 @@ class FindandReplaceFrame(Frame):
     self.controller = controller
     super().__init__(parent)
 
+    # All the input field variables
     self.find_text = StringVar(self, "")
     self.offset = StringVar(self, '0')
     self.replace_text = StringVar(self, "")
@@ -88,14 +93,15 @@ class FindandReplaceFrame(Frame):
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
-    # self.controller = controller
 
+    # All the entries
     find_field = Entry(self, bd=2, textvariable=controller.find_text, width=50)
     offset_field = Entry(self, bd=2, width=3, textvariable=controller.offset)
     ignore_case_field = Checkbutton(self, offvalue=False, onvalue=True, variable=controller.ignore_case)
     replace_field = Entry(self, bd=2, textvariable=controller.replace_text, width=50)
     file_count_field = Entry(self, bd=2, width=3, textvariable=controller.file_count)
 
+    # Adds the entries and labels to the grid 
     Label(self, text="Find: ").grid(row=0, column=0, sticky="W")
     find_field.grid(row=0, column=1)
     Label(self, text="Offset:").grid(row=1, column=0, sticky="W")
@@ -118,15 +124,18 @@ class RemoveTokenFrame(Frame):
     super().__init__(parent)
     self.controller = controller
 
+    # Input field variables
     self.token = StringVar(self, '.')
     self.file_count = StringVar(self, '0')
     self.log = StringVar(self)
 
+    # Container setup
     container = Frame(self)
     container.pack(expand=True, fill=BOTH)
     container.columnconfigure(0, weight=1)
     container.rowconfigure(1, weight=1)
 
+    # All the child frames
     _RemoveTokenFields(container, self,).grid(row=0, column=0, sticky="W")
     Log(parent=container, controller=self).grid(row=1, column=0)
     RunButtons(parent=container, controller=self, function=self.call_remove_token).grid(row=2, column=0)
@@ -138,9 +147,11 @@ class _RemoveTokenFields(Frame):
   def __init__(self, parent, controller) -> None:
     super().__init__(parent)
     
+    # Input fields
     token_field = Entry(self, bd=2, width=3, textvariable=controller.token)
     file_count_field = Entry(self, bd=2, width=3, textvariable=controller.file_count)
     
+    # Adds labels and input fields to grid
     Label(self, text="Token:").grid(row=0, column=0, sticky="W")
     token_field.grid(row=0, column=1, sticky="W")
     Label(self, text="File Count:").grid(row=1, column= 0, sticky="W")
@@ -165,6 +176,11 @@ class RunButtons(Frame):
     Button(self, text="Save Adjustments", command=lambda: self.confirm_save(function)).pack(side=LEFT)
 
   def confirm_save(self, function):
+    """
+    Pops confirmation dialog. On yes runs passed function otherwise does nothing.
+
+    :param function: This is called on confirmation as function(debug=False)
+    """
     if askyesno(title="Confirmation", message= "Are you sure you want to rename the files?"):
       function(debug=False)
 
