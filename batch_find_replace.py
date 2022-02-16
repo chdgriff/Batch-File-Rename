@@ -5,13 +5,10 @@ from core import *
 class BatchFindReplace(BatchFileNameOperations):
   def __init__(self, dir_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
     super().__init__(dir_path, file_count, debug)
-    self.find_text = find_text
     self.offset = offset
     self.replace_text = replace_text
     self.ignore_case = ignore_case
     self.find_text = find_text.upper() if self.ignore_case else find_text
-
-    self.error_msg = ""
 
   def run(self):
     if not self.check_vars(): return self.error_msg
