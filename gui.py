@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter.messagebox import askyesno
 from batch_find_replace import BatchFindReplace
 from remove_tokens import BatchRemoveTokens
 
@@ -43,6 +44,7 @@ class ModeButtonsFrame(Frame):
 class FilePathFrame(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
+    self.controller = controller
 
     label      = Label(self, text="Directory:")
     self.field = Entry(self, bd = 5, textvariable=controller.file_path, width=100)
@@ -53,8 +55,7 @@ class FilePathFrame(Frame):
     browse_btn.pack(side=LEFT)
 
   def browse_directories(self):
-    self.field.delete(0)
-    self.field.insert(0, filedialog.askdirectory())
+    self.controller.file_path.set(filedialog.askdirectory())
       
 class FindandReplaceFrame(Frame):
   def __init__(self, parent, controller):
@@ -156,8 +157,12 @@ class Log(Frame):
 class RunButtons(Frame):
   def __init__(self, parent, controller, function):
     super().__init__(parent)
-    Button(self, text="Test Adjustments", command=lambda: function()).pack(side=LEFT)
-    Button(self, text="Save Adjustments", command=lambda: function(debug=False)).pack(side=LEFT)
+    Button(self, text="Test Adjustments", command=lambda: self.confirm_test(function)).pack(side=LEFT)
+    Button(self, text="Save Adjustments", command=lambda: self.confirm_save(function)).pack(side=LEFT)
+
+  def confirm_save(self, function):
+    if askyesno(title="Confirmation", message= "Are you sure you want to rename the files?"):
+      function(debug=False)
 
 def main():
   app = BatchFileRename()
