@@ -24,11 +24,12 @@ class BatchFindReplace(BatchFileNameOperations):
   check_vars() -> bool
     Error checks the attributes.
   """
-  def __init__(self, dir_path, find_text, offset, replace_text, ignore_case, file_count, debug=True):
+  def __init__(self, dir_path, find_text, offset, replace_text, ignore_case, overwrite_file_ext, file_count, debug=True):
     super().__init__(dir_path, file_count, debug)
     self.offset = offset
     self.replace_text = replace_text
     self.ignore_case = ignore_case
+    self.overwrite_file_ext = overwrite_file_ext
     self.find_text = find_text.upper() if self.ignore_case else find_text
 
   def run(self) -> str:
@@ -65,8 +66,9 @@ class BatchFindReplace(BatchFileNameOperations):
       nextChar = found_idx + len(self.find_text) + self.offset 
       
       # Checks if offset would overwrite filename extension
-      file_extension_idx = file_name.rfind('.')
-      if nextChar > file_extension_idx: nextChar = file_extension_idx
+      if not self.overwrite_file_ext:
+        file_extension_idx = file_name.rfind('.')
+        if nextChar > file_extension_idx: nextChar = file_extension_idx
 
       # Creates the new file name
       if nextChar >= len(file_name):   # If text found at the end of the filename
