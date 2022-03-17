@@ -16,7 +16,7 @@ class BatchPrependAppend(BatchFileNameOperations):
     Error checks the attributes
   """
 
-  def __init__(self, text, prepend_append, dir_path, file_count, debug):
+  def __init__(self, dir_path, text, prepend_append, file_count, debug):
     super().__init__(dir_path, file_count, debug)
     self.text = text
     self.prepend_append = prepend_append
@@ -24,6 +24,8 @@ class BatchPrependAppend(BatchFileNameOperations):
   def run(self) -> str:
     """Runs overall operations."""
     if not self.check_vars(): return self.error_msg
+    self._prepend_append_text()
+    return super().stringify_log()
   
   def check_vars(self) -> bool:
     if not super().check_core_vars(): return False
@@ -41,7 +43,7 @@ class BatchPrependAppend(BatchFileNameOperations):
       if file_name in ignored_files: continue
 
       if self.prepend_append == 'A':
-        new_name = file_name+self.text
+        new_name = os.path.splitext(file_name)[0]+self.text+os.path.splitext(file_name)[1]
       else:
         new_name = self.text+file_name
 

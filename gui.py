@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.messagebox import askyesno
 from batch_find_replace import BatchFindReplace
+from batch_prepend_append import BatchPrependAppend
 from remove_tokens import BatchRemoveTokens
 
 class BatchFileRename(Tk):
@@ -74,7 +75,7 @@ class FindandReplaceFrame(Frame):
     self.find_text = StringVar(self, "")
     self.offset = StringVar(self, '0')
     self.replace_text = StringVar(self, "")
-    self.file_count = StringVar(self, '0')
+    self.file_count = StringVar(self, 0)
     self.ignore_case = BooleanVar(self, False)
     self.overwrite_file_ext = BooleanVar(self, False)
     self.log = StringVar(self)
@@ -91,7 +92,7 @@ class FindandReplaceFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), int(self.file_count.get()), debug).run())
+    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), self.file_count.get(), debug).run())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
@@ -122,8 +123,41 @@ class _FindandReplaceFields(Frame):
 class PrependAppendFrame(Frame):
   def __init__(self, parent, controller):
     super().__init__(parent)
+    self.controller = controller
 
-    Label(self, text="Prepend or Append").pack()
+    self.text = StringVar(self, "")
+    self.prepend_append = StringVar(self, "Prepend")
+    self.file_count = StringVar(self, 0)
+    self.log = StringVar(self)
+
+    # Container setup
+    container = Frame(self)
+    container.pack(expand=True, fill=BOTH)
+    container.columnconfigure(0, weight=1)
+    container.rowconfigure(1, weight=1)
+
+    _PrependAppendFields(parent=container, controller=self).grid(row=0, column=0, sticky="W")
+    Log(parent=container, controller=self).grid(row=1, column=0)
+    RunButtons(parent=container, controller=self, function=self.call_prepend_append).grid(row=2, column=0)
+
+  def call_prepend_append(self, debug=True):
+    prepend_append = 'A' if self.prepend_append.get() == "Append" else 'P'
+
+    self.log.set(BatchPrependAppend(self.controller.dir_path.get(), self.text.get(), prepend_append, self.file_count.get(), debug).run())
+
+class _PrependAppendFields(Frame):
+  def __init__(self, parent, controller):
+    super().__init__(parent)
+
+    text_field = Entry(self, bd=2, textvariable=controller.text, width=50)
+    prepend_append_dropdown = OptionMenu(self, controller.prepend_append, "Prepend", "Append")
+    file_count_field = Entry(self, bd=2, width=3, textvariable=controller.file_count)
+    
+    Label(self, text="Text: ").grid(row=0, column=0, sticky="W")
+    text_field.grid(row=0, column=1)
+    prepend_append_dropdown.grid(row=0, column=2)
+    Label(self, text="File Count: ").grid(row=1, column= 0, sticky="W")
+    file_count_field.grid(row=1, column=1, sticky="W")
 
 class RemoveTokenFrame(Frame):
   def __init__(self, parent, controller):
@@ -132,7 +166,7 @@ class RemoveTokenFrame(Frame):
 
     # Input field variables
     self.token = StringVar(self, '.')
-    self.file_count = StringVar(self, '0')
+    self.file_count = StringVar(self, 0)
     self.log = StringVar(self)
 
     # Container setup
