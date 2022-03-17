@@ -34,6 +34,9 @@ class BatchFileNameOperations():
     if not self._check_dir_path():
       self.error_msg = "ERROR: \""+self.dir_path+"\" cannot be found"
       return False
+    if not isinstance(self.file_count, int):
+      self.error_msg = "ERROR: file count must be an integer"
+      return False
     if self.file_count < 0:
       self.error_msg = "ERROR: file count must be 0 or greater"
       return False
