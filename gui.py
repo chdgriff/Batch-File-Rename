@@ -92,7 +92,7 @@ class FindandReplaceFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), self.file_count.get(), debug).run())
+    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), self.offset.get(), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), self.file_count.get(), debug).run())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):

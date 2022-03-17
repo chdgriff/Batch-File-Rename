@@ -43,6 +43,9 @@ class BatchFindReplace(BatchFileNameOperations):
   def check_vars(self) -> bool:
     """Error checks attributes."""
     if not super().check_core_vars(): return False
+    if not isinstance(self.offset, int):
+      self.error_msg = "ERROR: offset must an integer"
+      return False
     if self.offset < 0:
       self.error_msg = "ERROR: offset cannot be less than zero"
       return False
