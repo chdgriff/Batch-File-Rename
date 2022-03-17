@@ -15,6 +15,8 @@ class BatchFindReplace(BatchFileNameOperations):
   replace_text  : str
   ignore_case   : bool
     Whether to ignore case in searching for find_text.
+  overwrite_file_ext : bool
+    Can overwrite the file extension or insert right before
   
   --------
   Methods:
@@ -93,6 +95,6 @@ class BatchFindReplace(BatchFileNameOperations):
     if files_renamed == 0:
       self.log.append("\nNo files found with \""+self.find_text+"\" Did you mean something else?")
     else:
-      self.log.append("\n" + str(files_renamed) + (" files" if files_renamed>1 else " file")+(" to be" if self.debug else '') + " renamed")
+      self.log.append(f"\n{files_renamed}{' Files' if files_renamed>1 else ' File'}{' To Be' if self.debug else ''} Renamed")
     self.log.append("=====================================================================================\n")
 
