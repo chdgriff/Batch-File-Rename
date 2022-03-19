@@ -92,7 +92,7 @@ class FindandReplaceFrame(Frame):
     RunButtons(parent=container, controller=self, function=self.call_find_replace).grid(row=2, column=0)
 
   def call_find_replace(self, debug=True):
-    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), self.offset.get(), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), self.file_count.get(), debug).run())
+    self.log.set(BatchFindReplace(self.controller.dir_path.get(), self.find_text.get(), int(self.offset.get()), self.replace_text.get(), bool(self.ignore_case.get()), bool(self.overwrite_file_ext.get()), int(self.file_count.get()), debug).run())
 
 class _FindandReplaceFields(Frame):
   def __init__(self, parent, controller):
@@ -143,7 +143,7 @@ class PrependAppendFrame(Frame):
   def call_prepend_append(self, debug=True):
     prepend_append = 'A' if self.prepend_append.get() == "Append" else 'P'
 
-    self.log.set(BatchPrependAppend(self.controller.dir_path.get(), self.text.get(), prepend_append, self.file_count.get(), debug).run())
+    self.log.set(BatchPrependAppend(self.controller.dir_path.get(), self.text.get(), prepend_append, int(self.file_count.get()), debug).run())
 
 class _PrependAppendFields(Frame):
   def __init__(self, parent, controller):
