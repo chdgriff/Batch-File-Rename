@@ -39,8 +39,9 @@ class BatchPrependAppend(BatchFileNameOperations):
     self.log.append("Directory: \"{file_dir}\"\n")
     index = 0
     for file_name in os.listdir(file_dir):
-      if self.file_count and index >= self.file_count: break
+      if os.path.isdir(os.path.join(self.dir_path, file_name)): continue
       if file_name in ignored_files: continue
+      if self.file_count and index >= self.file_count: break
 
       if self.prepend_append == 'A':
         new_name = os.path.splitext(file_name)[0]+self.text+os.path.splitext(file_name)[1]
@@ -48,7 +49,7 @@ class BatchPrependAppend(BatchFileNameOperations):
         new_name = self.text+file_name
 
       if not self.debug: # Writes out new file name if not debug
-        os.rename(file_dir+"/"+file_name, file_dir+"/"+new_name)
+        os.rename(os.path.join(self.dir_path,file_name), os.path.join(self.dir_path, new_name))
       self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1

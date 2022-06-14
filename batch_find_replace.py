@@ -61,8 +61,9 @@ class BatchFindReplace(BatchFileNameOperations):
 
     index = 0
     for file_name in os.listdir(file_directory):
-      if self.file_count and index >= self.file_count: break
+      if os.path.isdir(os.path.join(self.dir_path, file_name)): continue
       if file_name in ignored_files: continue
+      if self.file_count and index >= self.file_count: break
 
       found_idx = (file_name.upper() if self.ignore_case else file_name).find(self.find_text)
       if found_idx == -1: continue
@@ -82,7 +83,7 @@ class BatchFindReplace(BatchFileNameOperations):
         new_name = file_name[:found_idx] + self.replace_text + file_name[nextChar:]
 
       if not self.debug: # Writes out new file name if not debug
-        os.rename(file_directory+"/"+file_name, file_directory+"/"+new_name)
+        os.rename(os.path.join(self.dir_path,file_name), os.path.join(self.dir_path, new_name))
       self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1

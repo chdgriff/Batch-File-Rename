@@ -24,6 +24,7 @@ class BatchRemoveTokens(BatchFileNameOperations):
 
     index = 0
     for file_name in os.listdir(self.dir_path):
+      if os.path.isdir(os.path.join(self.dir_path, file_name)): continue
       if file_name in ignored_files: continue
       if self.file_count and index >= self.file_count: break
       
@@ -34,7 +35,7 @@ class BatchRemoveTokens(BatchFileNameOperations):
         new_name = ' '.join(temp)
 
       if not self.debug:
-        os.rename(self.dir_path+"/"+file_name, self.dir_path+"/"+new_name)
+        os.rename(os.path.join(self.dir_path,file_name), os.path.join(self.dir_path, new_name))
       self.log.append(file_name + " --> " + new_name)
       files_renamed += 1
       index += 1
